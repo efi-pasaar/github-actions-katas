@@ -1,5 +1,11 @@
 name: Main workflow
-on: push
+on: 
+  push: 
+    branches: 
+      - main
+  pull_request:
+    branches:
+      - main
 env: 
   docker_username: ${{ github.actor }} 
   docker_password: ${{ secrets.GITHUB_TOKEN }}
@@ -11,6 +17,8 @@ jobs:
     steps:
       - name: Clone down repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - run: ci/build-app.sh
       - name: Test
         run: ci/unit-test-app.sh
